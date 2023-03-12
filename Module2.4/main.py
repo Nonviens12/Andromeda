@@ -10,7 +10,12 @@ def set_difficulty(value, difficulty):
     pass
 
 def show_scoreboard():
-    open('scoreboard.txt', 'r')
+    global menu
+    menu.clear()
+    with open('scoreboard.txt', 'r') as file:
+        text = file.read()
+        menu.add.label(text, max_char=-1, font_size=20)
+
 
 def start_the_game():
     myGame = game.game()
@@ -26,4 +31,14 @@ menu.add.button('Play', start_the_game)
 menu.add.button('Scoreboard', show_scoreboard)
 menu.add.button('Quit', pygame_menu.events.EXIT)
 
-menu.mainloop(surface)
+while True:
+    events = pygame.event.get()
+    for event in events:
+        if event.type == pygame.QUIT:
+            exit()
+ 
+    if menu.is_enabled():
+        menu.update(events)
+        menu.draw(surface)
+
+    pygame.display.update()
